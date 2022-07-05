@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "525175229503",
+    "project_id": "password-c5206",
+    "storage_bucket": "password-c5206.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:525175229503:android:8ab3f0e00e2d137b9bbc8a",
+        "android_client_info": {
+          "package_name": "com.password"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "525175229503-tn2k9rj68cu2p48jg3nj5v65c8jpc28p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJ7bCUQ-z-etZeBauat-kDBCRnrhuKF6k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "525175229503-tn2k9rj68cu2p48jg3nj5v65c8jpc28p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
