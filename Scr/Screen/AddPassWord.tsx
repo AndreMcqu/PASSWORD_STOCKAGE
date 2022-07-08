@@ -7,7 +7,8 @@ import auth from '@react-native-firebase/auth';
 import { useForm } from 'react-hook-form';
 import CustomInput from '../Components/CustomInput'
 import { Nav } from '../Components/Navigation';
-import Login from './Login';
+import CtnButton from '../Components/CtnButton';
+
 
 
 type CreateAuthprops = {
@@ -20,7 +21,7 @@ type CreateAuthprops = {
 
 const AddPassWord = () => {
     const navigation = useNavigation<NativeStackNavigationProp<Nav>>();
-    const { control, handleSubmit } = useForm<CreateAuthprops>({defaultValues: {Login:"", Password:"", Name:"", Type:"",}});
+    const { control, handleSubmit } = useForm<CreateAuthprops>({ defaultValues: { Login: "", Password: "", Name: "", Type: "", } });
 
 
     const onSubmit = ({ Login, Password, Name, Type }: CreateAuthprops) => {
@@ -43,6 +44,9 @@ const AddPassWord = () => {
     }
     return (
         <View style={styles.container}>
+            <View style={styles.top}></View>
+            <View style={styles.middleContainer}>
+            <View style={styles.middle}>
             <CustomInput
                 name="Login"
                 control={control}
@@ -63,7 +67,7 @@ const AddPassWord = () => {
                 name="Password"
                 control={control}
                 placeholder="Password"
-                secureTextEntry
+                Type="Password"
                 rules={{
                     required: 'Password is required',
                 }}
@@ -92,7 +96,13 @@ const AddPassWord = () => {
                     },
                 }}
             />
-            <Button title="Login" onPress={handleSubmit(onSubmit)} />
+            <View>
+            <CtnButton title="SUBMIT" type='secondary' onPress={handleSubmit(onSubmit)} />
+            <CtnButton title="BACK" type='secondary' onPress={() => navigation.navigate('Home')}/>
+            </View> 
+            </View> 
+            </View> 
+            <View style={styles.btm}></View>
         </View>
     )
 }
@@ -103,5 +113,30 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
         flex: 1,
-    }
+        backgroundColor: '#FFFFFF',
+    },
+    top: {
+        flex: 2,
+        borderBottomRightRadius: 60,
+        backgroundColor: '#3C4F76',
+    },
+    btm: {
+        flex: 2,
+        borderTopRightRadius: 60,
+        backgroundColor: '#3C4F76'
+      },
+      middleContainer: {
+        flex: 8,
+        backgroundColor: '#3C4F76',
+      },
+      middle: {
+        flex: 1,
+    borderTopLeftRadius: 60,
+    borderBottomLeftRadius: 60,
+    backgroundColor: '#FFFFFF',
+    paddingTop: 40,
+    paddingLeft: 20,
+    paddingRight: 20,
+      },
+    
 })

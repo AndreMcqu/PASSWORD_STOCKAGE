@@ -7,14 +7,15 @@ import { Nav } from '../Components/Navigation';
 import firestore from '@react-native-firebase/firestore'
 import auth from '@react-native-firebase/auth';
 import Card from '../Components/Card';
-import Login from './Login';
+import CtnButton from '../Components/CtnButton';
+
 
 type Passwordprops = {
     Name: string;
     Login: string;
     Password: string;
     Type: string;
-    Key : string;
+    Key: string;
 }
 
 const Home = () => {
@@ -29,32 +30,32 @@ const Home = () => {
 
     function onResult(querySnapshot: any) {
         console.log('Got Users collection result.');
-            const UsersData : Passwordprops[] = [];
-            querySnapshot.forEach((documentSnapshot : any) => {
-                console.log('Hello' , documentSnapshot.id)
-                let Docs = documentSnapshot.data();
-                UsersData.push({
-                    Name: Docs.Name,
-                    Login: Docs.Login,
-                    Password: Docs.Password,
-                    Type: Docs.Type,
-                    Key: documentSnapshot.id,
-                }); 
-            });
+        const UsersData: Passwordprops[] = [];
+        querySnapshot.forEach((documentSnapshot: any) => {
+            console.log('Hello', documentSnapshot.id)
+            let Docs = documentSnapshot.data();
+            UsersData.push({
+                Name: Docs.Name,
+                Login: Docs.Login,
+                Password: Docs.Password,
+                Type: Docs.Type,
+                Key: documentSnapshot.id,
+            });console.log('import to to card' + Docs.Name, Docs.Login, Docs.Password, Docs.Type, Docs.Key)
+        });
+
+        setUsers(UsersData);
+        setLoading(false);
+
+    };
     
-            setUsers(UsersData);
-            setLoading(false);
-           
-        };
-      
-      function onError(error : any) {
+    function onError(error: any) {
         console.error(error);
-      }
-      
+    }
+
 
     useEffect(() => {
         const DocUser = firestore()
-        
+
             .collection("Password")
             .where('uid', '==', UserUid)
             .onSnapshot(onResult, onError);
@@ -62,26 +63,33 @@ const Home = () => {
         // Unsubscribe from events when no longer in use
         return () => DocUser();
     }, []);
- 
+
     if (loading) {
         return <ActivityIndicator />;
-      }
+    }
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <Text>PassWords </Text>
-            </View>
-            <View style={styles.body}>
-                <View>
-
-                    <Text>Hello dear {RouteNavigation.params?.email}!</Text>
-                </View> 
-
-                <FlatList 
-                    data={users} renderItem={({ item }) =>
-              <Card Name={item.Name} Login={item.Login} Password={item.Password} Type={item.Type} Key={item.Key} />
-        } />
-                <Button title="AddPassWord" onPress={() => navigation.navigate('AddPassWord')} />
+            <View style={styles.top}></View>
+            <View style={styles.box}>
+                <View style={styles.side}></View>
+                <View style={styles.inner}>
+                    <View style={styles.body}>
+                        <View style={{ flex: 1 }}>
+                            <Text>Hello dear {RouteNavigation.params?.email}!</Text>
+                        </View>
+                        <View style={{ flex: 8 }}>
+                            <View style={{ flex: 8 }}>
+                                <FlatList
+                                    data={users} renderItem={({ item }) =>
+                                        <Card Name={item.Name} Login={item.Login} Password={item.Password} Type={item.Type} Key={item.Key} />
+                                    } />
+                            </View>
+                            <View style={{ flex: 2 , paddingLeft:5}}>
+                                <CtnButton title="AddPassWord" type="secondary" onPress={() => navigation.navigate('AddPassWord')} />
+                            </View>
+                        </View>
+                    </View>
+                </View>
             </View>
         </View>
     )
@@ -92,7 +100,17 @@ export default Home
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#439775',
+        backgroundColor: '#FFFFFF',
+    },
+    top: {
+        flex: 1,
+        borderBottomRightRadius: 60,
+        backgroundColor: '#4DA167'
+    },
+    box: {
+        flex: 8,
+        flexDirection: 'row',
+        backgroundColor: '#4DA167'
     },
     header: {
         flex: 1,
@@ -101,22 +119,15 @@ const styles = StyleSheet.create({
         flex: 9,
         borderRadius: 30,
         width: '95%',
-    }
-})
-
-    // useEffect(() => { 
-    //     const DocUser = () => {
-    //         const user = auth().currentUser?.uid;
-    //             firestore()
-    //                 .collection("Password")
-    //                 .where('uid','==',user)
-    //                 .get()
-    //                 .then((querySnapshot) => {
-    //                     console.log('total doc :', querySnapshot.size);
-    //                     querySnapshot.forEach(documentSnapshot => {
-    //                         console.log(documentSnapshot.data());
-    //                     })
-    //                 })}
-    //  }, []);        
-
-    //         console.log('This is a test',DocUser)
+    },
+    side: {
+        flex: 0.5,
+        backgroundColor: '#4DA167',
+    },
+    inner: {
+        flex: 15,
+        borderBottomLeftRadius: 60,
+        borderTopLeftRadius: 60,
+        backgroundColor: '#FFFFFF'
+    },
+});

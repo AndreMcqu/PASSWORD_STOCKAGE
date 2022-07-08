@@ -1,5 +1,5 @@
 import React from 'react';
-import Login from '../Screen/Login';
+import LoginScr from '../Screen/LoginScr';
 import SignUp from '../Screen/SignUp';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -8,7 +8,7 @@ import Home from '../Screen/Home';
 import AddPassWord from '../Screen/AddPassWord';
 
 export type Nav = {
-    Login: undefined;
+    LoginScr: undefined;
     SignUp: undefined;
     Home: {
         email: string,
@@ -22,8 +22,8 @@ const Stack = createNativeStackNavigator<Nav>();
 const Navigation = () => {
     return (
         <NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen name="Login" component={Login} />
+            <Stack.Navigator screenOptions={{headerShown: false}}>
+                <Stack.Screen name="LoginScr" component={LoginScr} />
                 <Stack.Screen name="SignUp" component={SignUp} />
                 <Stack.Screen name="Home" component={Home} />
                 <Stack.Screen name="AddPassWord" component={AddPassWord} />
