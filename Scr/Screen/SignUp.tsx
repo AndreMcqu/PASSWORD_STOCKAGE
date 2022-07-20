@@ -7,6 +7,7 @@ import CustomInput from '../Components/CustomInput';
 import { useForm } from 'react-hook-form';
 import auth from '@react-native-firebase/auth';
 import CtnButton from '../Components/CtnButton';
+import MMKVStorage, { MMKVLoader, useMMKVStorage } from "react-native-mmkv-storage";
 
 type CreateAuthprops = {
   email: string;
@@ -17,11 +18,17 @@ const SignUp = () => {
   const navigation = useNavigation<NativeStackNavigationProp<Nav>>();
   const { control, handleSubmit } = useForm<CreateAuthprops>({ defaultValues: { email: '', password: '' } });
 
+  const storage = new MMKVLoader().initialize();
+  const [iduser, setIdUser] = useMMKVStorage<string>("iduser", storage);
+  const [idpasswordLogin, setIdPasswordLogin] = useMMKVStorage<string>("idpasswordLogin", storage,);
+
   const onSubmit = ({ email, password }: CreateAuthprops) => {
     auth()
       .createUserWithEmailAndPassword(email.trim(), password)
       .then(() => {
         console.log('User account created & signed in!');
+        setIdUser(email);
+        setIdPasswordLogin(password);
         navigation.navigate('Home', { email })
       })
       .catch(error => {
@@ -57,6 +64,7 @@ const SignUp = () => {
                 message: 'Username should be max 24 characters long',
               },
             }}
+            keyboardType="default"
           />
           <CustomInput
             name="email"
@@ -65,6 +73,7 @@ const SignUp = () => {
             rules={{
               required: 'Email is required',
             }}
+            keyboardType="email"
           />
           <CustomInput
             name="password"
@@ -78,6 +87,7 @@ const SignUp = () => {
                 message: 'Password should be at least 8 characters long',
               },
             }}
+            keyboardType="default"
           />
         </View>
       </View>

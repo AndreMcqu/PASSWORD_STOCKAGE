@@ -1,4 +1,4 @@
-import { ActivityIndicator, Button, FlatList, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { ScreenContainer } from 'react-native-screens'
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
@@ -8,7 +8,7 @@ import firestore from '@react-native-firebase/firestore'
 import auth from '@react-native-firebase/auth';
 import Card from '../Components/Card';
 import CtnButton from '../Components/CtnButton';
-
+import MMKVStorage, { MMKVLoader, useMMKVStorage } from "react-native-mmkv-storage";
 
 type Passwordprops = {
     Name: string;
@@ -27,7 +27,6 @@ const Home = () => {
 
     const UserUid = auth().currentUser?.uid;
 
-
     function onResult(querySnapshot: any) {
         console.log('Got Users collection result.');
         const UsersData: Passwordprops[] = [];
@@ -40,14 +39,14 @@ const Home = () => {
                 Password: Docs.Password,
                 Type: Docs.Type,
                 Key: documentSnapshot.id,
-            });console.log('import to to card' + Docs.Name, Docs.Login, Docs.Password, Docs.Type, Docs.Key)
+            }); console.log('import to to card' + Docs.Name, Docs.Login, Docs.Password, Docs.Type, Docs.Key)
         });
 
         setUsers(UsersData);
         setLoading(false);
 
     };
-    
+
     function onError(error: any) {
         console.error(error);
     }
@@ -67,6 +66,16 @@ const Home = () => {
     if (loading) {
         return <ActivityIndicator />;
     }
+    const storage = new MMKVLoader().initialize();
+    const Signout = () => {
+        auth()
+            .signOut()
+            .then(() => {
+                console.log('User signed out!');
+            storage.clearStore();
+            navigation.navigate('LoginScr');});
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.top}></View>
@@ -84,8 +93,10 @@ const Home = () => {
                                         <Card Name={item.Name} Login={item.Login} Password={item.Password} Type={item.Type} Key={item.Key} />
                                     } />
                             </View>
-                            <View style={{ flex: 2 , paddingLeft:5}}>
+                            <View style={{ flex: 2, paddingLeft: 5 }}>
+                                <CtnButton title="Album" type="secondary" onPress={() => navigation.navigate('Album')} />
                                 <CtnButton title="AddPassWord" type="secondary" onPress={() => navigation.navigate('AddPassWord')} />
+                                <CtnButton title="SignOut" type="secondary" onPress={() => Signout()} />
                             </View>
                         </View>
                     </View>

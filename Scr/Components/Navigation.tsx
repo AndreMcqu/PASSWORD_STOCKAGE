@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import auth from '@react-native-firebase/auth';
 import Home from '../Screen/Home';
 import AddPassWord from '../Screen/AddPassWord';
+import Album from '../Screen/Album';
 
 export type Nav = {
     LoginScr: undefined;
@@ -14,6 +15,7 @@ export type Nav = {
         email: string,
     } | undefined;
     AddPassWord: undefined;
+    Album: undefined;
 }
 const Stack = createNativeStackNavigator<Nav>();
 
@@ -27,6 +29,7 @@ const Navigation = () => {
                 <Stack.Screen name="SignUp" component={SignUp} />
                 <Stack.Screen name="Home" component={Home} />
                 <Stack.Screen name="AddPassWord" component={AddPassWord} />
+                <Stack.Screen name="Album" component={Album} />
             </Stack.Navigator>
         </NavigationContainer>
     );

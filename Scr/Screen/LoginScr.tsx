@@ -1,5 +1,5 @@
-import { Alert, Button, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { Alert, Button, Keyboard, StyleSheet, Text, View } from 'react-native'
+import React, { useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Nav } from '../Components/Navigation';
@@ -7,22 +7,36 @@ import { useForm } from 'react-hook-form';
 import CustomInput from '../Components/CustomInput';
 import auth from '@react-native-firebase/auth';
 import CtnButton from '../Components/CtnButton';
-;
+import MMKVStorage, { MMKVLoader, useIndex, useMMKVStorage } from "react-native-mmkv-storage";
+import ID from '../Components/ID';
+import ReactNativeBiometrics, { BiometryTypes } from 'react-native-biometrics'
 
-type CreateAuthprops = {
+
+export type CreateAuthprops = {
   email: string;
   password: string;
 };
 
 const LoginScr = () => {
   const navigation = useNavigation<NativeStackNavigationProp<Nav>>();
+
+  const storage = new MMKVLoader().initialize();
+  const [user, setUser] = useMMKVStorage<string>("user", storage);
+  const [passwordLogin, setPasswordLogin] = useMMKVStorage<string>("age", storage,);
+
+
   const { control, handleSubmit } = useForm<CreateAuthprops>({ defaultValues: { email: '', password: '' }, mode: 'onBlur' });
   const onSubmit = ({ email, password }: CreateAuthprops) => {
+
+
+
     auth()
       .signInWithEmailAndPassword(email.trim(), password)
       .then(() => {
         console.log('User account created & signed in!');
-        navigation.navigate('Home', { email })
+        setUser(email);
+        setPasswordLogin(password);
+        navigation.navigate('Home', { email });
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
@@ -35,7 +49,54 @@ const LoginScr = () => {
 
         console.error(error);
       });
+
+
   };
+
+  useEffect(() => {
+    if(user && passwordLogin){
+        navigation.navigate('Home', { email:user })
+      }},[])  
+
+
+
+  console.log(user, passwordLogin)
+
+  const ID = () => {
+
+    const rnBiometrics = new ReactNativeBiometrics();
+    
+    rnBiometrics.simplePrompt({ promptMessage: 'Confirm fingerprint' })
+        .then((resultObject) => {
+            console.log('tocuh ID')
+            const { success } = resultObject
+            //GET//
+            if (success) {
+                console.log('successful biometrics provided')
+                auth()
+                    .signInWithEmailAndPassword("Hellogames@gmail.com", "Hellogames")
+                    .then(() => {
+                        navigation.navigate('Home');
+                    })
+
+            } else {
+                console.log('user cancelled biometric prompt')
+            }
+        })
+        .catch(() => {
+            console.log('biometrics failed')
+        })
+
+}
+
+
+
+
+  
+  // const postsIndex = useMMKVStorage("postsIndex",storage,[]); // ['post123','post234'];
+  // // Get the posts based on those ids.
+  // const [posts,update,remove] = useIndex(postsIndex,"object", storage);
+  // console.log(posts,update)
 
   return (
     <View style={styles.container}>
@@ -52,6 +113,7 @@ const LoginScr = () => {
             placeholder="E-Mail"
             control={control}
             rules={{ required: 'E-Mail is required' }}
+            keyboardType={"email-address"}
           />
           <Text>PassWord</Text>
           <CustomInput
@@ -61,16 +123,17 @@ const LoginScr = () => {
             control={control}
             rules={{
               required: 'Password is required',
-              minLength: {
-                value: 3,
-                message: 'Password should be minimum 3 characters long',
-              },
             }}
-          />
+          keyboardType={"default"}
+          /> 
+         
           <View style={styles.btn}>
             <CtnButton title="CONNECTION" type="primary" onPress={handleSubmit(onSubmit)} />
             <View style={styles.btn}>
               <CtnButton title="SIGN UP" type="primary" onPress={() => navigation.navigate('SignUp')} />
+            </View>
+            <View style={styles.btn}>
+            <CtnButton title="TouchID" type="primary" onPress={ID} />
             </View>
           </View>
         </View>

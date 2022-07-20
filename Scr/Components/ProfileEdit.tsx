@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Keyboard } from 'react-native';
 import React from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomInput from './CustomInput';
@@ -13,6 +13,7 @@ type ProfileEditprops = {
   EditType: string;
   rules: any;
   Key: string;
+  keyboardTypeedit: string;
 }
 type Updateporps = {
   Key: string;
@@ -20,12 +21,12 @@ type Updateporps = {
 }
 
 // ,CtmName: '', EditType: ''
-const ProfileEdit = ({ Name, CtmPlaceholder, EditType, Key, rules }: ProfileEditprops) => {
+const ProfileEdit = ({ Name, CtmPlaceholder, EditType, Key, rules,keyboardTypeedit }: ProfileEditprops) => {
   const { control, handleSubmit } = useForm<Updateporps>({ defaultValues: { Key: '', CtmName: '' } });
   const [modifie, setModifie] = React.useState<boolean>(true)
 
   const update = (CtmName: string) => {
-    console.log(CtmName)
+    console.log('the CtmName is '+CtmName+ ' and edit type is '+EditType)
     if (EditType === 'Name') { firestore().collection('Password').doc(Key).update({ Name: CtmName || CtmPlaceholder }).then(() => {
       setModifie(!modifie);
       console.log('User updated!' + Key);
@@ -60,7 +61,7 @@ return (
       <View><MaterialCommunityIcons name={"eye"} onPress={() => setModifie(!modifie)} /></View>
     </View>
       : <View style={styles.inputContainer}>
-        <View><CustomInput name="CtmName" placeholder={CtmPlaceholder} control={control} rules={rules} /></View>
+        <View><CustomInput  name="CtmName" placeholder={CtmPlaceholder} control={control} rules={rules} keyboardType={keyboardTypeedit} /></View>
         <View style={styles.inputIcon}><MaterialCommunityIcons name={"eye-off"} size={20} onPress={handleSubmit(onSubmit)} /></View>
       </View>}
   </View>

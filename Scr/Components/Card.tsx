@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React from 'react'
 import firestore from '@react-native-firebase/firestore'
 import ProfileEdit from './ProfileEdit';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 export type cardprops = {
@@ -33,24 +34,27 @@ const Card = ({ Name, Login, Password, Type, Key }: cardprops) => {
 
         <View style={styles.container}>
             <View style={styles.top}>
-            <View style={styles.left}>
-                <ProfileEdit Name={Name} CtmPlaceholder={Name} EditType={'Name'} Key={Key} rules={{ required: 'Name is required' }} />
+                <View style={styles.Layout}>
+                    <ProfileEdit Name={Name} CtmPlaceholder={Name} EditType={'Name'} Key={Key} rules={{ required: 'Name is required' }} keyboardTypeedit={"default"}/>
                 </View>
-                <View style={styles.right}>
-                <ProfileEdit Name={Type} CtmPlaceholder={Type} EditType={'Type'} Key={Key} rules={{ required: 'Type is required' }} />
+                <View style={styles.Layout}>
+                    <ProfileEdit Name={Type} CtmPlaceholder={Type} EditType={'Type'} Key={Key} rules={{ required: 'Type is required' }} keyboardTypeedit={"default"}/>
+                </View>
+                <View style={styles.Layout}>
+                    <Text style={styles.text}>Login :</Text>
+                </View>
+                <View style={styles.Layout}>
+                    <ProfileEdit Name={Login} CtmPlaceholder={Login} EditType={'Login'} Key={Key} rules={{ required: 'Login is required' }} keyboardTypeedit={"default"}/>
+                </View>
+                <View style={styles.Layout}>
+                    <Text style={styles.text}>Password :</Text>
+                </View>
+                <View style={styles.Layout}>
+                    <ProfileEdit Name={Password} CtmPlaceholder={Password} EditType={'Password'} Key={Key} rules={{ required: 'Password is required' }} keyboardTypeedit={"default"}/>
                 </View>
             </View>
-            <View style={styles.bottom}>
-            <View style={styles.left}>
-                <Text style={styles.text}>Login :</Text>
-                <ProfileEdit Name={Login} CtmPlaceholder={Login} EditType={'Login'} Key={Key} rules={{ required: 'Login is required' }} />
-                </View>
-                <View style={styles.right}>  
-                <ProfileEdit Name={Password} CtmPlaceholder={Password} EditType={'Password'} Key={Key} rules={{ required: 'Password is required' }} />
-                </View>
-                <View><TouchableOpacity onPress={() => onSubmit(Key)}>
-                    <Text>Delete</Text>
-                </TouchableOpacity></View>
+            <View style={styles.inputIcon}>
+                <MaterialCommunityIcons name={"eye-off"} size={20} onPress={() => onSubmit(Key)} />
             </View>
         </View>
 
@@ -62,37 +66,46 @@ export default Card
 
 const styles = StyleSheet.create({
     container: {
-        justifyContent: 'space-evenly',
+        alignItems: 'center',
+        justifyContent: 'center',
         backgroundColor: '#4DA167',
         paddingLeft: 10,
-        paddingTop: 10,
         borderTopRightRadius: 60,
         borderBottomRightRadius: 60,
         height: 120,
+        flexDirection: 'row',
+        marginBottom: 10,
     },
     top: {
-        flexDirection: 'row',
         flex: 4,
-    },
-    bottom: {
-        flex: 4,
+        gap: '1rem',
+        flexWrap: "wrap",
         flexDirection: 'row',
         paddingTop: 5
     },
-    right: {
-        flex: 1,
+    Layout: {
+        width: '40%',
         flexDirection: 'row',
+        margin: 4,
+
     },
     left: {
         flex: 1,
-        flexDirection: 'row',
+
     },
     password: {
-        justifyContent: 'center',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
-    text:{
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#383F51',
+    text: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#383F51',
+    },
+    inputIcon: {
+        position: 'absolute',
+        right: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 })

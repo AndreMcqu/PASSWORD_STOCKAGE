@@ -8,11 +8,14 @@ export type CustomInputprops = {
   name: string;
   rules: any,
   placeholder: string;
+  secureTextEntry?: boolean
   Type?: string,
+  keyboardType: string;
 
 }
 
-const CustomInput = ({ name, rules = {}, control, placeholder, Type, }: CustomInputprops) => {
+
+const CustomInput = ({ name, rules = {}, control, placeholder, Type, keyboardType }: CustomInputprops) => {
 
 
   const [visible, setVisible] = React.useState<boolean>(Type !== "Password")
@@ -41,12 +44,13 @@ const CustomInput = ({ name, rules = {}, control, placeholder, Type, }: CustomIn
               placeholder={placeholder}
               style={styles.input}
               secureTextEntry={!visible}
+              keyboardType={keyboardType}
             />
             {Type === "Password" && (
               <View style={styles.ctminput}>
                 <MaterialCommunityIcons onPress={VisibleHandler}
                   name={visible ? "eye-off" : "eye"}
-                  size={20}/>
+                  size={20} />
               </View>)}
           </View>
           {error && (
@@ -77,7 +81,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  input:{}
+  input: {}
 });
 
 export default CustomInput;
