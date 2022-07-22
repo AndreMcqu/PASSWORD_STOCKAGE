@@ -62,6 +62,7 @@ const AddPassWord = () => {
                         message: 'Username should be max 24 characters long',
                     },
                 }}
+                keyboardType="default"
             />
             <CustomInput
                 name="Password"
@@ -71,6 +72,7 @@ const AddPassWord = () => {
                 rules={{
                     required: 'Password is required',
                 }}
+                keyboardType="default"
             />
             <CustomInput
                 name="Name"
@@ -83,6 +85,7 @@ const AddPassWord = () => {
                         message: 'Password should be at least 8 characters long',
                     },
                 }}
+                keyboardType="default"
             />
             <CustomInput
                 name="Type"
@@ -95,6 +98,7 @@ const AddPassWord = () => {
                         message: 'Password should be at least 8 characters long',
                     },
                 }}
+                keyboardType="default"
             />
             <View>
             <CtnButton title="SUBMIT" type='secondary' onPress={handleSubmit(onSubmit)} />

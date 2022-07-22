@@ -3,10 +3,11 @@ import LoginScr from '../Screen/LoginScr';
 import SignUp from '../Screen/SignUp';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import auth from '@react-native-firebase/auth';
 import Home from '../Screen/Home';
 import AddPassWord from '../Screen/AddPassWord';
-import Album from '../Screen/Album';
+import Upload from '../Screen/Upload';
+import Gallery from '../Screen/Gallery';
+import CameraRoll from '@react-native-community/cameraroll';
 
 export type Nav = {
     LoginScr: undefined;
@@ -15,11 +16,11 @@ export type Nav = {
         email: string,
     } | undefined;
     AddPassWord: undefined;
-    Album: undefined;
+    Upload: {images : CameraRoll.PhotoIdentifier[]};
+    Gallery: undefined;
 }
+
 const Stack = createNativeStackNavigator<Nav>();
-
-
 
 const Navigation = () => {
     return (
@@ -29,12 +30,11 @@ const Navigation = () => {
                 <Stack.Screen name="SignUp" component={SignUp} />
                 <Stack.Screen name="Home" component={Home} />
                 <Stack.Screen name="AddPassWord" component={AddPassWord} />
-                <Stack.Screen name="Album" component={Album} />
+                <Stack.Screen name="Upload" component={Upload} />
+                <Stack.Screen name="Gallery" component={Gallery} />
             </Stack.Navigator>
         </NavigationContainer>
     );
 };
-
-
 
 export default Navigation;

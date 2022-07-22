@@ -94,7 +94,7 @@ const Home = () => {
                                     } />
                             </View>
                             <View style={{ flex: 2, paddingLeft: 5 }}>
-                                <CtnButton title="Album" type="secondary" onPress={() => navigation.navigate('Album')} />
+                                <CtnButton title="Gallery" type="secondary" onPress={() => navigation.navigate('Gallery')} />
                                 <CtnButton title="AddPassWord" type="secondary" onPress={() => navigation.navigate('AddPassWord')} />
                                 <CtnButton title="SignOut" type="secondary" onPress={() => Signout()} />
                             </View>
